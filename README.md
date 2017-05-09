@@ -10,8 +10,8 @@ If the player is falling too far, the game should be over.
 
 Ideas:
 - [x] Shake the camera
-- [ ] Kill the player
-- [] Show some text
+- [x] Kill the player
+- [ ] Show some text
 
 ```javascript
 
