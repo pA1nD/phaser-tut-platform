@@ -6,19 +6,31 @@ Group up in teams. Every team will work on a different challenge.
 
 ### Challenge 1 - Game over.
 
+If the player is falling too far, the game should be over.
+
 ```javascript
-// PLAYER IS FALLING TOO MUCH
-// have a variable this.dead = false
+
+// FIRST: Check if player is falling too much
+// 1. In "var PhaserGame = function () { ..."
+// put a variable to save if player is dead.
+this.dead = false
+// 2. The actual check is happening in the update function.
 if (this.player.body.velocity.y >= 500) { this.dead = true }
 
-// DIE ON TOUCHING A PLATFORM
+// SECOND: If player is touching a platform. GameOver.
+// This check must be after the "this.physics.arcade.collide(this.player, this.platforms)". Otherwise it will not work on platforms.
+// This goes in the update function.
 if ( this.player.body.blocked.down || this.player.body.touching.down ) { gameOver(this) }
+// This goes outside everything.
 function gameOver (t) {
-  if (t.dead) { SOMETHING HAPPENS! }
+  if (t.dead) {
+		// SOMETHING HAPPENS! 
+  }
 }
 
 // SHAKE THE CAMERA
 this.camera.shake(0.5, 500)
+
 ```
 
 ### Challenge 2 - Next level.
