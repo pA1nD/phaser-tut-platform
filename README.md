@@ -124,8 +124,9 @@ Questions:
 
 Ideas:
 - [x] Place Diamonds
-- [x] Make the next level more difficult (change setting like platform speed, ...)
-- [ ] Show some message before starting the next level.
+- [x] Make them stay
+- [ ] Add some more Items
+- [ ] Count collected items
 
 ```javascript
 
@@ -141,9 +142,15 @@ this.diamonds = this.add.physicsGroup();
 // In the loop.
 var diamond = this.diamonds.create(x+55, y-32, 'diamond');
 diamond.body.velocity.x = platform.body.velocity.x
+platform.diamond = diamond
 // After the loop
 this.diamonds.setAll('body.allowGravity', false);
 this.diamonds.setAll('body.immovable', true);
+// In the warpPlatform function:
+platform.diamond.x = 640+55
+// and
+platform.diamond.x = -160+55
+
 
 // THIRD: Consume item
 // This goes into the update function
@@ -155,11 +162,25 @@ function eatItem(player, item) {
 }
 
 // MORE ITEMS:
-this.load.image('diamond', 'https://raw.githubusercontent.com/photonstorm/phaser-examples/master/examples/assets/sprites/????????????');
+// Load them in the preload function.
+this.load.image('someNAME', 'https://raw.githubusercontent.com/photonstorm/phaser-examples/master/examples/assets/sprites/FILENAME');
+// Put some name for "someNAME" and one of the filenames below for "FILENAME".
+// Possible Filenames:
 // carrot.png, firstaid.png, master.png, melon.png, mushroom2.png, mushroom.png, pangball.png, pineapple.png
 // spinObj_01.png, spinObj_02.png, spinObj_03.png, spinObj_04.png, spinObj_05.png, spinObj_06.png, spinObj_07.png, spinObj_08.png
 
+// Add a score for the items.
+// Add text like that:
+this.text = this.add.text(100, 100, '- Some score -')
+this.text.fill = '#fff'
+// You can change the text for display the score like that:
+this.text.text = "Your score: " + score
+// Heads up! "score" must be a global variable. Put it outside everything.
+score = 0
 
-// If you have a score: update the score: "score++" and "scoreText.text = score"
+// If you have a score: update the score in the eatItem function:
+score++
+text.text = score
+// Does that work? Why (not)?
 
 ```
