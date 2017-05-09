@@ -3,6 +3,8 @@
 ## Lecture 8
 
 Group up in teams. Every team will work on a different challenge.
+Go to [jsbin.com](http://jsbin.com/) and create a new bin. Copy the code from index.html and code.js.
+Let's go!
 
 ### Challenge 1 - Game over.
 
