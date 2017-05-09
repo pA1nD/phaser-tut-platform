@@ -8,6 +8,11 @@ Group up in teams. Every team will work on a different challenge.
 
 If the player is falling too far, the game should be over.
 
+Ideas:
+- [x] Shake the camera
+- [ ] Kill the player
+- [] Show some text
+
 ```javascript
 
 // FIRST: Check if player is falling too much
@@ -22,14 +27,17 @@ if (this.player.body.velocity.y >= 500) { this.dead = true }
 // This goes in the update function.
 if ( this.player.body.blocked.down || this.player.body.touching.down ) { gameOver(this) }
 // This goes outside everything.
+// "this" is "t" here.
 function gameOver (t) {
   if (t.dead) {
 		// SOMETHING HAPPENS! 
   }
 }
 
-// SHAKE THE CAMERA
+// Shake the camera
 this.camera.shake(0.5, 500)
+// Kill the player
+this.player.kill()
 
 ```
 
