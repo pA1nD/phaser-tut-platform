@@ -8,10 +8,15 @@ Group up in teams. Every team will work on a different challenge.
 
 If the player is falling too far, the game should be over.
 
+Questions:
+- What is a good distance, the player should be able to fall?
+- How to say weather the player is falling on the ground or a platform (check: this.player.body.blocked.down || this.player.body.touching.down)
+
 Ideas:
 - [x] Shake the camera
 - [x] Kill the player
 - [ ] Show some text
+- [ ] Have three life
 
 ```javascript
 
@@ -26,7 +31,7 @@ if (this.player.body.velocity.y >= 500) { this.dead = true }
 // This check must be after the "this.physics.arcade.collide(this.player, this.platforms)". Otherwise it will not work on platforms.
 // This goes in the update function.
 if ( this.player.body.blocked.down || this.player.body.touching.down ) { gameOver(this) }
-// This goes outside everything.
+// This goes in no function. Outside everything.
 // "this" is "t" here.
 function gameOver (t) {
   if (t.dead) {
@@ -43,14 +48,60 @@ this.player.kill()
 
 ### Challenge 2 - Next level.
 
+If the player reaches the top of the level, he should get to the next level.
+
+Questions:
+- What is a good height to switch to the next level?
+
+Ideas:
+- [x] Change to the next level
+- [x] Make the next level more difficult (change setting like platform speed, ...)
+- [ ] Show some message before starting the next level.
+
 ```javascript
-// IF PLAYER IS CLOSE TO THE TOP
+
+// If player is close to the top:
+// This goes into the update function.
 if (this.player.body.position.y < 100) { nextLevel() }
 
+// This goes in no function. Outside everything.
 function nextLevel () {
   // CHANGE SOME SETTINGS... (e.g. platform speed)
   this.game.state.start('Game')
 }
+
+// How to change platform speed?
+// find this line in the create function: "platform.body.velocity.x = this.rnd.between(100, 150);"
+// Add a variable at the very top!
+var plfSpeedMax = 150
+// Change the line in the create function:
+platform.body.velocity.x = this.rnd.between(100, plfSpeedMax);
+// Change the value in the next level function;
+plfSpeedMax = 450
+// You could also always add some value. So everytime, you change the level, it gets more:
+plfSpeedMax += 20
+
+// How to show some message between the levels?
+// FYI: This line takes our game that we define here "PhaserGame.prototype = {..."
+// and adds it to the "state manager" with the name "Game": "game.state.add('Game', PhaserGame, true);"
+// If the last argument is "true", the game will direclty start.
+// Everytime we call "this.game.state.start('Game')", we start the "Game" again.
+
+// This is how you can add another game.
+var NextGame = {
+  init: function () {},
+  preload: function () {},
+  update: function () {},
+  create: function () {
+    text = this.add.text(100, 100, '- Hello Rosenberg -')
+    text.fill = '#fff'
+  }
+}
+game.state.add('Game Next Level', NextGame, false);
+
+// See: Here we have "false" so the game does not start directly. We can start it, using:
+this.game.state.start('Game Next Level')
+
 ```
 
 ### Challenge 3 - Add items to collect.
