@@ -20,53 +20,32 @@ PhaserGame.prototype = {
 
   },
 
+  
   preload: function () {
 
     this.load.baseURL = 'http://files.phaser.io.s3.amazonaws.com/codingtips/issue003/';
     this.load.crossOrigin = 'anonymous';
 
-    // this.load.image('background', 'assets/background.png');
-
-    // NEW
     this.load.image('trees', 'assets/trees.png');
     this.load.image('clouds', 'assets/clouds.png');
 
-    // PRELOAD images for platform, ice-platform, dude!
     this.load.image('platform', 'assets/platform.png');
     this.load.image('ice-platform', 'assets/ice-platform.png');
     this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 
   },
 
+  
   create: function () {
 
     // Add background
-    // OLD
-    // this.add.sprite(0, 0, 'background');
-    // new
     this.stage.backgroundColor = '#2f9acc';
     this.sky = this.add.tileSprite(0, 0, 640, 480, 'clouds');
     this.sky.fixedToCamera = true;
 
     this.add.sprite(0, 1906, 'trees');
 
-    // ADD A PLATFORM
-    // OLD
-    // this.platforms = this.add.physicsGroup();
-    // this.platforms.create(0, 64, 'ice-platform');
-    //
-    // // LOAD Create three more platforms
-    // this.platforms.create(200, 180, 'platform');
-    // this.platforms.create(400, 296, 'ice-platform');
-    // this.platforms.create(600, 412, 'platform');
-    //
-    // // Keep Platforms!!
-    // this.platforms.setAll('body.allowGravity', false);
-    // // Move platforms
-    // this.platforms.setAll('body.velocity.x', 100);
-    // // Keep Platforms from flying away
-    // this.platforms.setAll('body.immovable', true);
-    // new
+    // ADD PLATFORMS
     this.platforms = this.add.physicsGroup();
 
     var x = 0;
@@ -77,7 +56,7 @@ PhaserGame.prototype = {
         var type = i % 2 === 1 ? 'platform' : 'ice-platform';
         var platform = this.platforms.create(x, y, type);
 
-        //  Set a random speed between 50 and 200
+        //  Set a random speed between 50 and 150
         platform.body.velocity.x = this.rnd.between(100, 150);
 
         //  Inverse it?
@@ -101,9 +80,6 @@ PhaserGame.prototype = {
 
 
     // ADD Player
-    // OLD
-    // this.player = this.add.sprite(320, 432, 'dude');
-    // new
     this.player = this.add.sprite(320, 1952, 'dude');
 
     // Add physics for the player
@@ -111,7 +87,7 @@ PhaserGame.prototype = {
     this.player.body.collideWorldBounds = true;
     this.player.body.setSize(20, 32, 5, 16);
 
-    // TASK 2: Make the camera follow the player (Player is: this.player)
+    // Camera follows the player
     this.camera.follow(this.player);
 
     // Add Animations
@@ -124,7 +100,9 @@ PhaserGame.prototype = {
 
   },
 
+  
   update: function () {
+    this.sky.tilePosition.y = -(this.camera.y * 0.7)
 
     this.platforms.forEach(wrapPlatform);
 
@@ -178,13 +156,13 @@ PhaserGame.prototype = {
         this.jumpTimer = this.time.time + 750;
     }
 
-
-
   }
 
 };
 
+
 game.state.add('Game', PhaserGame, true);
+
 
 function wrapPlatform (platform) {
 
