@@ -35,7 +35,7 @@ if ( this.player.body.blocked.down || this.player.body.touching.down ) { gameOve
 // "this" is "t" here.
 function gameOver (t) {
   if (t.dead) {
-		// SOMETHING HAPPENS! 
+    // SOMETHING HAPPENS! 
   }
 }
 
@@ -43,6 +43,16 @@ function gameOver (t) {
 this.camera.shake(0.5, 500)
 // Kill the player
 this.player.kill()
+
+// For a button to restart after dying:
+// Put this into the gameOver function.
+this.text = this.add.text(100, 100, 'some text')
+this.text.fixedToCamera = true;
+text.inputEnabled = true;
+text.events.onInputDown.add(someFunction, this);
+// Heads up: someFunction is not defined. It must be a function at the very end of the code.
+// Talk to the people fro Challenge 2. They can explain, how it works.
+
 
 ```
 
@@ -76,7 +86,7 @@ function nextLevel () {
 var plfSpeedMax = 150
 // Change the line in the create function:
 platform.body.velocity.x = this.rnd.between(100, plfSpeedMax);
-// Change the value in the next level function;
+// Change the value in the nextLevel function;
 plfSpeedMax = 450
 // You could also always add some value. So everytime, you change the level, it gets more:
 plfSpeedMax += 20
@@ -88,6 +98,7 @@ plfSpeedMax += 20
 // Everytime we call "this.game.state.start('Game')", we start the "Game" again.
 
 // This is how you can add another game.
+// Put that outside everything.
 var NextGame = {
   init: function () {},
   preload: function () {},
@@ -106,27 +117,49 @@ this.game.state.start('Game Next Level')
 
 ### Challenge 3 - Add items to collect.
 
+Place some items on the platforms to collect.
+
+Questions:
+- How many items should be there? One on every platform?
+
+Ideas:
+- [x] Place Diamonds
+- [x] Make the next level more difficult (change setting like platform speed, ...)
+- [ ] Show some message before starting the next level.
+
 ```javascript
-// LOAD DIAMOND
+
+// Example Diamonds:
+// FIRST: Load the diamond
+// This goes into the preload function.
 this.load.image('diamond', 'https://raw.githubusercontent.com/photonstorm/phaser-examples/master/examples/assets/sprites/diamond.png');
 
-// PLACE ITEM ON PLATFORM
+// SECOND: Place the items on the platforms
+// This goes into the create funtion.
+// Before the loop.
 this.diamonds = this.add.physicsGroup();
-this.diamonds.setAll('body.allowGravity', false);
-this.diamonds.setAll('body.immovable', true);
+// In the loop.
 var diamond = this.diamonds.create(x+55, y-32, 'diamond');
 diamond.body.velocity.x = platform.body.velocity.x
+// After the loop
+this.diamonds.setAll('body.allowGravity', false);
+this.diamonds.setAll('body.immovable', true);
 
-// CONSUME ITEM
-this.physics.arcade.overlap(this.player, this.item, eatItem)
-// OR (IF IT IS A GROUP) use this.items instead of this.item!!
+// THIRD: Consume item
+// This goes into the update function
+this.physics.arcade.overlap(this.player, this.diamonds, eatItem)
+
+// This goes outside everything (very end of the file)
 function eatItem(player, item) {
-	 item.kill();
-	 // If you have a score: update the score: "score++" and "scoreText.text = score"
+  item.kill();
 }
 
 // MORE ITEMS:
 this.load.image('diamond', 'https://raw.githubusercontent.com/photonstorm/phaser-examples/master/examples/assets/sprites/????????????');
-carrot.png, firstaid.png, master.png, melon.png, mushroom2.png, mushroom.png, pangball.png, pineapple.png
-spinObj_01.png, spinObj_02.png, spinObj_03.png, spinObj_04.png, spinObj_05.png, spinObj_06.png, spinObj_07.png, spinObj_08.png
+// carrot.png, firstaid.png, master.png, melon.png, mushroom2.png, mushroom.png, pangball.png, pineapple.png
+// spinObj_01.png, spinObj_02.png, spinObj_03.png, spinObj_04.png, spinObj_05.png, spinObj_06.png, spinObj_07.png, spinObj_08.png
+
+
+// If you have a score: update the score: "score++" and "scoreText.text = score"
+
 ```
